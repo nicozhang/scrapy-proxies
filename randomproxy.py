@@ -25,11 +25,13 @@ from scrapy import log
 
 class RandomProxy(object):
     def __init__(self, settings):
+        # 在setting.py 里设置代理   PROXY_LIST = ["http://HD792G3E233168JP:7D5ED2DC1D2FE3B0@proxy.abuyun.com:9010", ]
+        # 也可以从文件里读取
         self.proxy_list = settings.get('PROXY_LIST')
-        fin = open(self.proxy_list)
+        # fin = open(self.proxy_list)
 
         self.proxies = {}
-        for line in fin.readlines():
+        for line in self.proxy_list:
             parts = re.match('(\w+://)(\w+:\w+@)?(.+)', line)
             if not parts:
                 continue
@@ -42,7 +44,7 @@ class RandomProxy(object):
 
             self.proxies[parts.group(1) + parts.group(3)] = user_pass
 
-        fin.close()
+        # fin.close()
 
     @classmethod
     def from_crawler(cls, crawler):
